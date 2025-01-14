@@ -12,7 +12,6 @@
 /build
 
 .env
-./src/DarkMode.js
 
 # misc
 .DS_Store
