@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import SpotifyWebApi from "spotify-web-api-js";
+import './output.css';
+import DarkMode from "./DarkMode";
 
 const spotifyWebApi = new SpotifyWebApi();
 
@@ -11,7 +13,6 @@ function App() {
   const [playlistDetails, setPlaylistDetails] = useState(null);
 
   useEffect(() => {
-    // Extract token from URL
     const token = window.location.hash
       .substring(1)
       .split("&")
@@ -26,14 +27,12 @@ function App() {
       spotifyWebApi.setAccessToken(token);
       setLoggedIn(true);
       window.location.hash = "";
-      // Fetch user's playlists
       spotifyWebApi.getUserPlaylists().then((response) => {
-        setPlaylists(response.items); // Save playlists to state
+        setPlaylists(response.items);
       });
     }
   }, []);
 
-  // Fetch playlist tracks when a playlist is selected
   const fetchPlaylistTracks = (playlistId) => {
     spotifyWebApi.getPlaylist(playlistId).then((response) => {
       setPlaylistDetails({
@@ -45,20 +44,25 @@ function App() {
   };
 
   return (
-    <div className="App">
+    <div className="App flex flex-col justify-center items-center gap-10 dark:bg-slate-800 dark:text-white">
+      <DarkMode />
+      <div className="flex flex-col justify-center items-center gap-10">
+      <h1 className="text-center text-6xl font-bold pt-10 text-slate-800 dark:text-gray-100">Spotify Playlist Song Lister</h1>
       {!loggedIn && (
-        <a href="http://localhost:8888" className="linkspotify">
+        <a href="http://localhost:8888" className="linkspotify border p-3 rounded-lg dark:text-gray-200 hover:bg-slate-800 hover:text-slate-50 border-slate-700 border-solid">
           Log in to Spotify
         </a>
       )}
+      </div>
       {loggedIn && (
         <>
-          <h2>Select a Playlist</h2>
+          <h2 className="text-2xl font-semibold text-slate-500 dark:text-gray-300">Select a Playlist</h2>
           {playlists.length > 0 ? (
             <ul>
               {playlists.map((playlist) => (
-                <li key={playlist.id}>
-                  <button
+
+                <li key={playlist.id}  className="border text-black font-normal hover:bg-slate-800 hover:text-slate-50 hover:scale-110 dark:text-gray-100">
+                  <button className="p-3"
                     onClick={() => {
                       setSelectedPlaylistId(playlist.id);
                       fetchPlaylistTracks(playlist.id);
@@ -75,12 +79,12 @@ function App() {
 
           {selectedPlaylistId && playlistDetails && (
             <div>
-              <h3>Playlist Details</h3>
+              <h3 className="text-3xl text-slate-700 font-semibold dark:text-gray-300 pb-3">Playlist Details</h3>
               <p>Name: {playlistDetails.name}</p>
               {console.log(playlistDetails.name)}
               <p>Total Tracks: {playlistDetails.totalTracks}</p>
               <h4>Tracks:</h4>
-              <ul>
+              <ul className="list-decimal">
                 {playlistDetails.tracks.map((track, index) => (
                   <li key={index}>{track}</li>
                 ))}
