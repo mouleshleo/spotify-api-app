@@ -7,15 +7,15 @@ function DarkMode() {
 
   const changeMode = () => {
     setMode((prevMode) => {
-        const newMode = !prevMode; // Toggle between true (dark) and false (light)
-        document.body.classList.toggle("dark", newMode); // Add "dark" if true, remove if false
+        const newMode = !prevMode;
+        document.body.classList.toggle("dark", newMode); 
         return newMode;
     });
 };
 
 const changerClassName = mode
-    ? "changer border rounded-full p-2 bg-gray-800 hover:rotate-6 hover:scale-125 duration-100" // Dark mode
-    : "changer border rounded-full p-2 bg-white hover:rotate-6 hover:scale-125 duration-100";  // Light mode
+    ? "changer border rounded-full p-2 bg-gray-800 hover:rotate-6 hover:scale-125 duration-100" 
+    : "changer border rounded-full p-2 bg-white hover:rotate-6 hover:scale-125 duration-100";  
 
   return (
     <div className="fixed top-10 right-11">
